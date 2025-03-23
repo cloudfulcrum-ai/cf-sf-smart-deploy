@@ -1,22 +1,16 @@
-name: Publish Docker Images
+name: Build & Push to GHCR
 
 on:
   push:
     branches:
-      - main  # Run only on pushes to main
-    paths:
-      - "cf-sf-*/**"  # Trigger only if specific action folders change
+      - main  # Trigger on main branch updates
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
-      packages: write  # Required for publishing to GitHub Packages
+      packages: write  # Required for pushing to GHCR
       contents: read
-
-    strategy:
-      matrix:
-        action: [cf-sf-lean-packager, cf-sf-smart-deploy, cf-sf-deploy-dynamic-apex, cf-sf-apex-cache-builder, cf-sf-secure-quality-gate]
 
     steps:
       - name: Checkout repository
@@ -27,11 +21,10 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
-          cd ${{ matrix.action }}
-          docker build -t ghcr.io/${{ github.repository }}/${{ matrix.action }}:latest \
-                       -t ghcr.io/${{ github.repository }}/${{ matrix.action }}:${{ github.sha }} .
+          docker build -t ghcr.io/${{ github.repository }}/cf-sf-smart-deploy:latest \
+                       -t ghcr.io/${{ github.repository }}/cf-sf-smart-deploy:${{ github.sha }} .
 
       - name: Push Docker images
         run: |
-          docker push ghcr.io/${{ github.repository }}/${{ matrix.action }}:latest
-          docker push ghcr.io/${{ github.repository }}/${{ matrix.action }}:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository }}/cf-sf-smart-deploy:latest
+          docker push ghcr.io/${{ github.repository }}/cf-sf-smart-deploy:${{ github.sha }}
