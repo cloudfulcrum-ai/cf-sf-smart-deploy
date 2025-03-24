@@ -1,4 +1,7 @@
 # Smart Deploy
+
+    This repository contain GitHub Action designed to automate Salesforce deployment task. The action is packaged as a Docker container and provides a specialized function.
+    
 **cf-sf-smart-deploy**
 
     Deploys Salesforce metadata smartly by analyzing changes.
@@ -10,7 +13,7 @@
 Usage Example:
 
     - name: Deploy Salesforce Metadata
-      uses: ghcr.io/itfulcrum/cf-sf-smart-deploy@latest
+      uses: ghcr.io/cloudfulcrum-ai/cf-sf-smart-deploy@latest
       with:
           package-path: "./target/MyPackage.zip"
           target-org: "my-salesforce-org"
